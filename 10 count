@@ -16,10 +16,7 @@ void setup(){
 void loop(){
   if(digitalRead(btn) == LOW){
     cnt += 1;
-    timer0_millis = 0;
-    if(cnt == 2){
-      cnt = 0;
-    }
+    timer0_millis = 0; 
   }
 
   if(cnt == 1){
@@ -35,7 +32,9 @@ void loop(){
     delay(100);
     }
   }
-
+  if(cnt == 2){
+      cnt = 0;
+  }  
   if(cnt == 0){
     lcd.init();
   } 
