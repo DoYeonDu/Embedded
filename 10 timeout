@@ -2,10 +2,10 @@
 #include <LiquidCrystal_I2C.h>
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
-extern volatile unsigned long timer0_millis;
+extern unsigned long timer0_millis;
 
 int btn = 6;
-int ctn = 0;
+int cnt = 0;
 unsigned long sec =0;
 
 void setup(){
@@ -16,23 +16,23 @@ void setup(){
 
 void loop(){
   if(digitalRead(btn) == LOW){
-    ctn += 1;
+    cnt += 1;
     timer0_millis = 0;
   }
 
-  if(ctn == 1){
+  if(cnt == 1){
     sec = millis() / 1000;
     delay(1000);
     lcd.setCursor(0,0);
     lcd.print(sec);
     
   }
-  if(ctn==2){
+  if(cnt==2){
     lcd.init();
     lcd.print(sec);
   }  
-  if(ctn == 3){
+  if(cnt == 3){
     lcd.init();
-    ctn=0;
+    cnt=0;
   }
 }
