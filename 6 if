@@ -13,61 +13,17 @@ void setup()
 }
 
 void loop() {
-
-
-  if (Serial.available()) {  //시리얼 모니터를 통해 들어오는 데이터가 있다면
+    if (Serial.available()) {  //시리얼 모니터를 통해 들어오는 데이터가 있다면
     char data = Serial.read(); // 데이터를 data 변수에 저장
 
-// baklight 
-    if (data == '1') { 
-      lcd.noBacklight();
-      delay(1000);
-      lcd.backlight();
-    }
+  //if문을 이용한 다양한 display 관련 함수 실습
 
-// Display 
-    if (data == '2') {
-      lcd.noDisplay();
-      delay(1000);
-      lcd.display();
-    }
 
-// Cursor Blink 
-    if (data == '3') {
-      lcd.blink();
-      delay(1000);
-      lcd.noBlink();
-    }
 
-// Cursor
-    if (data == '4') {
-      lcd.cursor();
-      delay(1000);
-      lcd.noCursor();
-    }
 
-// Scroll 
-    if (data  == '5') {
-      lcd.scrollDisplayRight();
-      delay(1000);
-      lcd.scrollDisplayLeft();
-    }
 
-// Cursor 위치 변경
-    if (data  == '6') {
-      int i;
-      lcd.home();
-      lcd.cursor();
-      for (i = 0; i < 16; i++) {
-        lcd.setCursor(i, 0);
-        delay(100);
-      }
-      for (i = 0; i < 16; i++) {
-        lcd.setCursor(i, 1);
-        delay(100);
-      }
-      lcd.noCursor();
-      lcd.home();
-    }
-  }
+
+
+
+
 }
