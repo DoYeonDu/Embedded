@@ -1,38 +1,92 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-LiquidCrystal_I2C lcd(0x27, 16, 2);
+LiquidCrystal_I2C lcd(0x27,16,2);
 extern volatile unsigned long timer0_millis;
 
 int btn = 6;
-int ctn = 0;
-unsigned long sec =0;
+int cnt = 0;
 
+unsigned long t; // 전체 time
+unsigned long s_10 = 0, s = 0; // s_10: 10의자리, s: 1의자리
+unsigned long m_10 = 0, m = 0; // m_10: 10의자리, m: 1의자리
 void setup(){
   pinMode(btn, INPUT_PULLUP);
   lcd.init();
   lcd.backlight();
+  lcd.setCursor(4,0);
+  lcd.print("Stopwatch");
+  lcd.setCursor(4,1);
+  lcd.print("0");
+  lcd.setCursor(5,1);
+  lcd.print("0");
+  lcd.setCursor(7,1);
+  lcd.print(":");
+  lcd.setCursor(9,1);
+  lcd.print("0");
+  lcd.setCursor(10,1);
+  lcd.print("0");
 }
 
 void loop(){
   if(digitalRead(btn) == LOW){
-    ctn += 1;
+    cnt += 1;
     timer0_millis = 0;
   }
 
-  if(ctn == 1){
-    sec = millis() / 1000;
+  
+  if(cnt == 1){
+    t = millis() / 1000;
+
+    s = (t % 60) % 10;
+    s_10 = (t % 60) / 10;
+    m = ((t / 60) % 60) % 10;
+    m_10 = ((t / 60) % 60) / 10;
+
     delay(1000);
-    lcd.setCursor(0,0);
-    lcd.print(sec);
     
+    lcd.setCursor(4, 1);
+    lcd.print(m_10);
+    lcd.setCursor(5,1);
+    lcd.print(m);
+    lcd.setCursor(7,1);
+    lcd.print(":");
+    lcd.setCursor(9,1);
+    lcd.print(s_10);
+    lcd.setCursor(10,1);
+    lcd.print(s);
   }
-  if(ctn==2){
+
+  //pause
+  if(cnt == 2){
     lcd.init();
-    lcd.print(sec);
-  }  
-  if(ctn == 3){
-    lcd.init();
-    ctn=0;
+    lcd.setCursor(4,0);
+    lcd.print("Stopwatch");    
+    lcd.setCursor(4, 1);
+    lcd.print(m_10);
+    lcd.setCursor(5,1);
+    lcd.print(m);
+    lcd.setCursor(7,1);
+    lcd.print(":");
+    lcd.setCursor(9,1);
+    lcd.print(s_10);
+    lcd.setCursor(10,1);
+    lcd.print(s);
+  } 
+
+  //reset
+  if(cnt == 3){
+    cnt=0;
+    lcd.setCursor(4, 1);
+    lcd.print("0");
+    lcd.setCursor(5,1);
+    lcd.print("0");
+    lcd.setCursor(7,1);
+    lcd.print(":");
+    lcd.setCursor(9,1);
+    lcd.print("0");
+    lcd.setCursor(10,1);
+    lcd.print("0");
   }
+  
 }
